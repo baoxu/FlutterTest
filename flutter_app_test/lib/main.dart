@@ -95,6 +95,41 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
 
+  void _pushSaved() {
+    // 添加Navigator.push调用，这会使路由入栈（以后路由入栈均指推入到导航管理器的栈）
+    Navigator.of(context).push(
+      // 新页面的内容在在MaterialPageRoute的builder属性中构建，builder是一个匿名函数。
+      new MaterialPageRoute(builder: (context) {
+          // 添加生成ListTile行的代码。
+          final tiles = _saved.map(
+                  (pair) {
+                return new ListTile(
+                  title: new Text(
+                    pair.asPascalCase,
+                    style: _biggerFont,
+                  ),
+                );
+              }
+          );
+          // ListTile的divideTiles()方法在每个ListTile之间添加1像素的分割线。 该 divided 变量持有最终的列表项。
+          final divided = ListTile
+              .divideTiles(
+            context: context,
+            tiles: tiles,
+          ).toList();
+          // builder返回一个Scaffold，其中包含名为“Saved Suggestions”的新路由的应用栏。
+          // 新路由的body由包含ListTiles行的ListView组成; 每行之间通过一个分隔线分隔。
+          return new Scaffold(
+            appBar: new AppBar(
+              title: new Text('Saved Suggestions'),
+            ),
+            body: new ListView(children: divided),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 //    final wordPair = new WordPair.random();
@@ -103,9 +138,12 @@ class RandomWordsState extends State<RandomWords> {
     return new Scaffold (
       appBar: new AppBar(
         title: new Text('Startup Name Generator'),
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),
+        ],
       ),
       body: _buildSuggestions(),
     );
-
+  // 提示: 某些widget属性需要单个widget（child），而其它一些属性，如action，需要一组widgets(children），用方括号[]表示。
   }
 }
