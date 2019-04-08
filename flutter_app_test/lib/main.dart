@@ -9,6 +9,10 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Startup Name Generator',
       home: new RandomWords(),
+      // 您可以通过配置ThemeData类轻松更改应用程序的主题。 您的应用程序目前使用默认主题，下面将更改primary color颜色为白色。
+      theme: new ThemeData(
+        primaryColor: Colors.deepOrangeAccent,
+      ),
     );
   }
 
